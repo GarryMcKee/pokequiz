@@ -1,4 +1,4 @@
-package com.gmk0232.whosthatpokemon.feature.quiz.data
+package com.gmk0232.whosthatpokemon.feature.quiz.data.remote
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

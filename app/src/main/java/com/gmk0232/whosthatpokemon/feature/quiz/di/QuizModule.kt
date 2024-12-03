@@ -1,11 +1,11 @@
 package com.gmk0232.whosthatpokemon.feature.quiz.di
 
 import com.gmk0232.whosthatpokemon.common.data.PokeQuizDatabase
-import com.gmk0232.whosthatpokemon.feature.quiz.data.CurrentRoundDao
-import com.gmk0232.whosthatpokemon.feature.quiz.data.CurrentRoundRepositoryImpl
-import com.gmk0232.whosthatpokemon.feature.quiz.data.PokemonAPI
-import com.gmk0232.whosthatpokemon.feature.quiz.data.PokemonDao
-import com.gmk0232.whosthatpokemon.feature.quiz.data.PokemonRepositoryImpl
+import com.gmk0232.whosthatpokemon.feature.quiz.data.remote.CurrentRoundDao
+import com.gmk0232.whosthatpokemon.feature.quiz.data.repository.CurrentRoundRepositoryImpl
+import com.gmk0232.whosthatpokemon.feature.quiz.data.remote.PokemonAPI
+import com.gmk0232.whosthatpokemon.feature.quiz.data.remote.PokemonDao
+import com.gmk0232.whosthatpokemon.feature.quiz.data.repository.PokemonRepositoryImpl
 import com.gmk0232.whosthatpokemon.feature.quiz.domain.CurrentRoundRepository
 import com.gmk0232.whosthatpokemon.feature.quiz.domain.DetermineCorrectPokemonSelectedUseCase
 import com.gmk0232.whosthatpokemon.feature.quiz.domain.DetermineCorrectPokemonSelectedUseCaseImpl
@@ -42,14 +42,15 @@ class QuizModule {
     @Provides
     fun provideCurrentRoundRepository(
         currentRoundDao: CurrentRoundDao,
-        pokemonDao: PokemonDao
+        pokemonDao: PokemonDao,
+        pokemonAPI: PokemonAPI
     ): CurrentRoundRepository {
-        return CurrentRoundRepositoryImpl(currentRoundDao, pokemonDao)
+        return CurrentRoundRepositoryImpl(currentRoundDao, pokemonDao, pokemonAPI)
     }
 
     @Provides
-    fun provideDetermineCorrectPokemonSelectedUseCase(): DetermineCorrectPokemonSelectedUseCase {
-        return DetermineCorrectPokemonSelectedUseCaseImpl()
+    fun provideDetermineCorrectPokemonSelectedUseCase(currentRoundRepository: CurrentRoundRepository): DetermineCorrectPokemonSelectedUseCase {
+        return DetermineCorrectPokemonSelectedUseCaseImpl(currentRoundRepository)
     }
 
     @Provides

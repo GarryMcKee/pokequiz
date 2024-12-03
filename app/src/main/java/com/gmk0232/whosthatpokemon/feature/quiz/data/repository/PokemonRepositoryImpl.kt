@@ -1,5 +1,8 @@
-package com.gmk0232.whosthatpokemon.feature.quiz.data
+package com.gmk0232.whosthatpokemon.feature.quiz.data.repository
 
+import com.gmk0232.whosthatpokemon.feature.quiz.data.remote.PokemonAPI
+import com.gmk0232.whosthatpokemon.feature.quiz.data.remote.PokemonDao
+import com.gmk0232.whosthatpokemon.feature.quiz.data.remote.toPokemonEntityList
 import com.gmk0232.whosthatpokemon.feature.quiz.domain.PokemonRepository
 
 const val POKEMON_LIMIT = 150

@@ -19,8 +19,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.gmk0232.whosthatpokemon.feature.quiz.domain.Pokemon
 import com.gmk0232.whosthatpokemon.feature.quiz.domain.PokemonQuizRoundData
+import com.gmk0232.whosthatpokemon.feature.quiz.domain.QuizRoundState
 import com.gmk0232.whosthatpokemon.feature.quiz.domain.QuizRoundState.Unanswered
 
 val testData = QuizScreenUIState.QuizRoundDataReady(
@@ -41,11 +43,18 @@ fun QuizRoute() {
     val quizScreenViewModel: QuizScreenViewModel = hiltViewModel()
     val quizScreenUIState by quizScreenViewModel.quizScreenUIState.collectAsStateWithLifecycle()
 
-    QuizScreen(quizScreenUIState)
+    QuizScreen(
+        quizScreenUIState = quizScreenUIState,
+        onRefreshClicked = quizScreenViewModel::refresh,
+        onPokemonSelected = quizScreenViewModel::onPokemonSelected
+    )
 }
 
 @Composable
-fun QuizScreen(quizScreenUIState: QuizScreenUIState) {
+fun QuizScreen(
+    quizScreenUIState: QuizScreenUIState,
+    onPokemonSelected: (Pokemon) -> Unit
+) {
     Spacer(modifier = Modifier.height(16.dp))
     Column(
         modifier = Modifier
@@ -55,13 +64,20 @@ fun QuizScreen(quizScreenUIState: QuizScreenUIState) {
         Alignment.CenterHorizontally
     ) {
 
-        Spacer(modifier = Modifier.weight(1f))
         when (quizScreenUIState) {
             is QuizScreenUIState.QuizRoundDataReady -> {
                 val quizData = quizScreenUIState.pokemonQuizRoundData
+
                 Text("Guess the pokemon:")
                 Text(quizData.pokemonToGuess.name)
-                Spacer(modifier = Modifier.height(16.dp))
+                if (quizScreenUIState.quizRoundState == QuizRoundState.Correct) {
+                    Text("Correct!")
+                }
+
+                if (quizScreenUIState.quizRoundState == QuizRoundState.Incorrect) {
+                    Text("Incorrect!")
+                }
+                Spacer(Modifier.weight(1f))
                 Column(modifier = Modifier.fillMaxWidth()) {
                     quizData.pokemonOptions.chunked(2)
                         .forEach { pokemonChoices ->
@@ -70,7 +86,9 @@ fun QuizScreen(quizScreenUIState: QuizScreenUIState) {
                                 horizontalArrangement = Arrangement.SpaceEvenly
                             ) {
                                 pokemonChoices.forEach { pokemonChoice ->
-                                    Button({}) {
+                                    Button(onClick = {
+                                        onPokemonSelected(pokemonChoice)
+                                    }) {
                                         Text(pokemonChoice.name)
                                     }
                                 }
@@ -96,5 +114,5 @@ fun QuizScreen(quizScreenUIState: QuizScreenUIState) {
 @Composable
 fun QuizScreenPreview(
 ) {
-    QuizScreen(testData)
+    QuizScreen(testData, {})
 }

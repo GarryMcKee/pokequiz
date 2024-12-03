@@ -1,4 +1,4 @@
-package com.gmk0232.whosthatpokemon.feature.quiz.data
+package com.gmk0232.whosthatpokemon.feature.quiz.data.remote
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass

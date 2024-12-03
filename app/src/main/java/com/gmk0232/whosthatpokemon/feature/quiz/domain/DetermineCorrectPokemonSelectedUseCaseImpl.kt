@@ -1,7 +1,9 @@
 package com.gmk0232.whosthatpokemon.feature.quiz.domain
 
-class DetermineCorrectPokemonSelectedUseCaseImpl : DetermineCorrectPokemonSelectedUseCase {
-    override fun execute(pokemon: Pokemon): Boolean {
-        TODO("Not yet implemented")
+class DetermineCorrectPokemonSelectedUseCaseImpl(private val currentRoundRepository: CurrentRoundRepository) :
+    DetermineCorrectPokemonSelectedUseCase {
+    override suspend fun execute(pokemon: Pokemon): Boolean {
+        val currentRound = currentRoundRepository.getCurrentRound()
+        return (currentRound.pokemonToGuess.number == pokemon.number)
     }
 }
