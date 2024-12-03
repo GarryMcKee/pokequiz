@@ -6,7 +6,6 @@ import com.gmk0232.whosthatpokemon.feature.quiz.domain.DetermineCorrectPokemonSe
 import com.gmk0232.whosthatpokemon.feature.quiz.domain.FetchPokemonUseCase
 import com.gmk0232.whosthatpokemon.feature.quiz.domain.GetPokemonQuizRoundDataUseCase
 import com.gmk0232.whosthatpokemon.feature.quiz.domain.Pokemon
-import com.gmk0232.whosthatpokemon.feature.quiz.domain.QuizRoundState
 import com.gmk0232.whosthatpokemon.feature.quiz.domain.QuizRoundState.Correct
 import com.gmk0232.whosthatpokemon.feature.quiz.domain.QuizRoundState.Incorrect
 import com.gmk0232.whosthatpokemon.feature.quiz.domain.QuizRoundState.Unanswered
@@ -24,9 +23,7 @@ import javax.inject.Inject
 @HiltViewModel
 class QuizScreenViewModel @Inject constructor(
     private val getPokemonQuizRoundDataUseCase: GetPokemonQuizRoundDataUseCase,
-    private val determineCorrectPokemonSelectedUseCase: DetermineCorrectPokemonSelectedUseCase,
-    private val fetchPokemonUseCase: FetchPokemonUseCase
-) :
+    private val determineCorrectPokemonSelectedUseCase: DetermineCorrectPokemonSelectedUseCase, ) :
     ViewModel() {
 
     private val _quizScreenUIState: MutableStateFlow<QuizScreenUIState> = MutableStateFlow(Loading)

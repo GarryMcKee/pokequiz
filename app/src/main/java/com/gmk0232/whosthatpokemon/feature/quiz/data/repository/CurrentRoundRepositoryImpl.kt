@@ -33,17 +33,6 @@ class CurrentRoundRepositoryImpl(
 
     override suspend fun getCurrentRound(): PokemonQuizRoundData {
         val currentRound = currentRoundDao.getCurrentRound()
-        val pokemonToGuessUrl = pokemonDao.getPokemonByNumber(currentRound.pokemonToGuess).dataUrl
-        val pokemonOption1 = pokemonDao.getPokemonByNumber(currentRound.pokemonChoice1).dataUrl
-        val pokemonOption2 = pokemonDao.getPokemonByNumber(currentRound.pokemonChoice2).dataUrl
-        val pokemonOption3 = pokemonDao.getPokemonByNumber(currentRound.pokemonChoice3).dataUrl
-
-        val pokemonDetailUrls =
-            listOf(pokemonToGuessUrl, pokemonOption1, pokemonOption2, pokemonOption3)
-
-        val pokemonDetails = pokemonDetailUrls.map {
-            getPokemonDetailForUrl(it)
-        }
 
         val pokemonToGuess = Pokemon(
             name = pokemonDao.getPokemonByNumber(currentRound.pokemonToGuess).name,

@@ -19,7 +19,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.gmk0232.whosthatpokemon.feature.quiz.domain.Pokemon
 import com.gmk0232.whosthatpokemon.feature.quiz.domain.PokemonQuizRoundData
 import com.gmk0232.whosthatpokemon.feature.quiz.domain.QuizRoundState
@@ -45,7 +44,6 @@ fun QuizRoute() {
 
     QuizScreen(
         quizScreenUIState = quizScreenUIState,
-        onRefreshClicked = quizScreenViewModel::refresh,
         onPokemonSelected = quizScreenViewModel::onPokemonSelected
     )
 }

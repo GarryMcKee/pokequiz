@@ -13,12 +13,3 @@ data class CurrentRoundEntity(
     @ColumnInfo(name = "pokemon_choice_2") val pokemonChoice2: Int,
     @ColumnInfo(name = "pokemon_choice_3") val pokemonChoice3: Int
 )
-
-fun PokemonQuizRoundData.toCurrentRoundEntity(): CurrentRoundEntity {
-    return CurrentRoundEntity(
-        pokemonToGuess = this.pokemonToGuess.number,
-        pokemonChoice1 = pokemonOptions[0].number,
-        pokemonChoice2 = pokemonOptions[1].number,
-        pokemonChoice3 = pokemonOptions[2].number
-    )
-}
