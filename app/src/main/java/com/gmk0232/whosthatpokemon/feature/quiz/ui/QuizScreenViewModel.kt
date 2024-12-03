@@ -5,8 +5,9 @@ import androidx.lifecycle.viewModelScope
 import com.gmk0232.whosthatpokemon.feature.quiz.domain.DetermineCorrectPokemonSelectedUseCase
 import com.gmk0232.whosthatpokemon.feature.quiz.domain.GetPokemonQuizRoundDataUseCase
 import com.gmk0232.whosthatpokemon.feature.quiz.domain.Pokemon
-import com.gmk0232.whosthatpokemon.feature.quiz.domain.QuizRoundState
-import com.gmk0232.whosthatpokemon.feature.quiz.domain.QuizRoundState.*
+import com.gmk0232.whosthatpokemon.feature.quiz.domain.QuizRoundState.Correct
+import com.gmk0232.whosthatpokemon.feature.quiz.domain.QuizRoundState.Incorrect
+import com.gmk0232.whosthatpokemon.feature.quiz.domain.QuizRoundState.Unanswered
 import com.gmk0232.whosthatpokemon.feature.quiz.ui.QuizScreenUIState.Loading
 import com.gmk0232.whosthatpokemon.feature.quiz.ui.QuizScreenUIState.QuizRoundDataReady
 import dagger.hilt.android.lifecycle.HiltViewModel

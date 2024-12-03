@@ -8,18 +8,20 @@ espressoCore = "3.5.1"
 lifecycleRuntimeKtx = "2.6.1"
 activityCompose = "1.8.0"
 composeBom = "2024.04.01"
-
 moshi = "1.15.1"
 moshiKotlin = "1.15.1"
 navigationCompose = "2.8.4"
 androidx-hilt-navigation-compose = "1.2.0"
 retrofit = "2.11.0"
-vico = "2.0.0-beta.3"
+room_version = "2.6.1"
 converterMoshiVersion = "2.9.0"
 hiltAndroid = "2.51.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room_version" }
+androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room_version" }
+androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room_version" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }

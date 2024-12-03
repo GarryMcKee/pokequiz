@@ -59,6 +59,14 @@ dependencies {
     implementation (libs.androidx.navigation.compose)
     implementation(libs.androidx.hilt.navigation.compose)
 
+    implementation(libs.androidx.room.runtime)
+
+    // If this project only uses Java source, use the Java annotationProcessor
+    // No additional plugins are necessary
+    kapt(libs.androidx.room.compiler)
+    implementation(libs.androidx.room.ktx)
+
+
     kapt(libs.hilt.android.compiler)
     //noinspection KaptUsageInsteadOfKsp
     kapt (libs.moshi.kotlin.codegen)

@@ -21,17 +21,19 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.gmk0232.whosthatpokemon.feature.quiz.domain.Pokemon
 import com.gmk0232.whosthatpokemon.feature.quiz.domain.PokemonQuizRoundData
+import com.gmk0232.whosthatpokemon.feature.quiz.domain.QuizRoundState.Unanswered
 
 val testData = QuizScreenUIState.QuizRoundDataReady(
     pokemonQuizRoundData = PokemonQuizRoundData(
-        pokemonToGuess = Pokemon("Pikachu", ""), pokemonOptions = listOf(
-            Pokemon("Rhyhorn", ""),
-            Pokemon("Porygon", ""),
-            Pokemon("Charmander", ""),
-            Pokemon("Pikachu", "")
+        pokemonToGuess = Pokemon("Pikachu", 23, imageUrl = ""), pokemonOptions = listOf(
+            Pokemon("Rhyhorn", 21, ""),
+            Pokemon("Porygon", 44, ""),
+            Pokemon("Charmander", 42, ""),
+            Pokemon("Pikachu", 23, "")
 
         )
-    )
+    ),
+    Unanswered
 )
 
 @Composable
