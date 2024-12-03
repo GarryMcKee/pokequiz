@@ -22,11 +22,17 @@ fun QuizRoute() {
 //    val viewModel: GrapherViewModel = hiltViewModel()
 //    val grapherScreenUIState by viewModel.grapherScreenUIState.collectAsStateWithLifecycle()
 
-    QuizScreen()
+    QuizScreen(QuizScreenUIState(pokemonToGuess = PokemonUIModel("Pikachu", ""), pokemonOptions = listOf(
+        PokemonUIModel("Rhyhorn", ""),
+        PokemonUIModel("Porygon", ""),
+        PokemonUIModel("Charmander", ""),
+        PokemonUIModel("Pikachu", "")
+
+    )))
 }
 
 @Composable
-fun QuizScreen() {
+fun QuizScreen(quizScreenUIState: QuizScreenUIState) {
     Spacer(modifier = Modifier.height(16.dp))
     Column(
         modifier = Modifier
@@ -37,25 +43,23 @@ fun QuizScreen() {
     ) {
 
         Spacer(modifier = Modifier.weight(1f))
-        Text("Guess the pokemon")
+        Text("Guess the pokemon:")
+        Text(quizScreenUIState.pokemonToGuess.name)
         Spacer(modifier = Modifier.height(16.dp))
         Column(modifier = Modifier.fillMaxWidth()) {
-            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly){
-                Button({}) {
-                    Text("Pokemon 1")
+            quizScreenUIState.pokemonOptions.chunked(2)
+                .forEach { pokemonChoices ->
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceEvenly
+                    ) {
+                        pokemonChoices.forEach { pokemonChoice ->
+                            Button({}) {
+                                Text(pokemonChoice.name)
+                            }
+                        }
+                    }
                 }
-                Button({}) {
-                    Text("Pokemon 2")
-                }
-            }
-            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
-                Button({}) {
-                    Text("Pokemon 3")
-                }
-                Button({}) {
-                    Text("Pokemon 4")
-                }
-            }
         }
 
     }
@@ -66,5 +70,11 @@ fun QuizScreen() {
 @Composable
 fun QuizScreenPreview(
 ) {
-    QuizScreen()
+    QuizScreen(QuizScreenUIState(pokemonToGuess = PokemonUIModel("Pikachu", ""), pokemonOptions = listOf(
+        PokemonUIModel("Rhyhorn", ""),
+        PokemonUIModel("Porygon", ""),
+        PokemonUIModel("Charmander", ""),
+        PokemonUIModel("Pikachu", "")
+
+    )))
 }
