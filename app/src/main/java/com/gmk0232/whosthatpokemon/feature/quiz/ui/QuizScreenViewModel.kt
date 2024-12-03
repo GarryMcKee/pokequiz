@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
-class QuizScreenViewModel @Inject constructor(private val getPokemonQuizRoundDataUseCase: GetPokemonQuizRoundDataUseCase) :
+class QuizScreenViewModel @Inject constructor(getPokemonQuizRoundDataUseCase: GetPokemonQuizRoundDataUseCase) :
     ViewModel() {
 
     private val _quizScreenUIState: MutableStateFlow<QuizScreenUIState> = MutableStateFlow(
