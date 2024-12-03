@@ -11,24 +11,34 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.gmk0232.whosthatpokemon.feature.quiz.domain.Pokemon
+import com.gmk0232.whosthatpokemon.feature.quiz.domain.PokemonQuizRoundData
 
+val testData = QuizScreenUIState.QuizRoundDataReady(
+    pokemonQuizRoundData = PokemonQuizRoundData(
+        pokemonToGuess = Pokemon("Pikachu", ""), pokemonOptions = listOf(
+            Pokemon("Rhyhorn", ""),
+            Pokemon("Porygon", ""),
+            Pokemon("Charmander", ""),
+            Pokemon("Pikachu", "")
+
+        )
+    )
+)
 
 @Composable
 fun QuizRoute() {
-//    val viewModel: GrapherViewModel = hiltViewModel()
-//    val grapherScreenUIState by viewModel.grapherScreenUIState.collectAsStateWithLifecycle()
+    val quizScreenViewModel: QuizScreenViewModel = hiltViewModel()
+    val quizScreenUIState by quizScreenViewModel.quizScreenUIState.collectAsStateWithLifecycle()
 
-    QuizScreen(QuizScreenUIState(pokemonToGuess = PokemonUIModel("Pikachu", ""), pokemonOptions = listOf(
-        PokemonUIModel("Rhyhorn", ""),
-        PokemonUIModel("Porygon", ""),
-        PokemonUIModel("Charmander", ""),
-        PokemonUIModel("Pikachu", "")
-
-    )))
+    QuizScreen(quizScreenUIState)
 }
 
 @Composable
@@ -43,24 +53,30 @@ fun QuizScreen(quizScreenUIState: QuizScreenUIState) {
     ) {
 
         Spacer(modifier = Modifier.weight(1f))
-        Text("Guess the pokemon:")
-        Text(quizScreenUIState.pokemonToGuess.name)
-        Spacer(modifier = Modifier.height(16.dp))
-        Column(modifier = Modifier.fillMaxWidth()) {
-            quizScreenUIState.pokemonOptions.chunked(2)
-                .forEach { pokemonChoices ->
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceEvenly
-                    ) {
-                        pokemonChoices.forEach { pokemonChoice ->
-                            Button({}) {
-                                Text(pokemonChoice.name)
+        when (quizScreenUIState) {
+            is QuizScreenUIState.QuizRoundDataReady -> {
+                val quizData = quizScreenUIState.pokemonQuizRoundData
+                Text("Guess the pokemon:")
+                Text(quizData.pokemonToGuess.name)
+                Spacer(modifier = Modifier.height(16.dp))
+                Column(modifier = Modifier.fillMaxWidth()) {
+                    quizData.pokemonOptions.chunked(2)
+                        .forEach { pokemonChoices ->
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceEvenly
+                            ) {
+                                pokemonChoices.forEach { pokemonChoice ->
+                                    Button({}) {
+                                        Text(pokemonChoice.name)
+                                    }
+                                }
                             }
                         }
-                    }
                 }
+            }
         }
+
 
     }
 
@@ -70,11 +86,5 @@ fun QuizScreen(quizScreenUIState: QuizScreenUIState) {
 @Composable
 fun QuizScreenPreview(
 ) {
-    QuizScreen(QuizScreenUIState(pokemonToGuess = PokemonUIModel("Pikachu", ""), pokemonOptions = listOf(
-        PokemonUIModel("Rhyhorn", ""),
-        PokemonUIModel("Porygon", ""),
-        PokemonUIModel("Charmander", ""),
-        PokemonUIModel("Pikachu", "")
-
-    )))
+    QuizScreen(testData)
 }
