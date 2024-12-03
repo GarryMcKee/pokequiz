@@ -3,6 +3,7 @@ package com.gmk0232.whosthatpokemon.feature.quiz.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gmk0232.whosthatpokemon.feature.quiz.domain.DetermineCorrectPokemonSelectedUseCase
+import com.gmk0232.whosthatpokemon.feature.quiz.domain.FetchPokemonUseCase
 import com.gmk0232.whosthatpokemon.feature.quiz.domain.GetPokemonQuizRoundDataUseCase
 import com.gmk0232.whosthatpokemon.feature.quiz.domain.Pokemon
 import com.gmk0232.whosthatpokemon.feature.quiz.domain.QuizRoundState.Correct
@@ -22,7 +23,8 @@ import javax.inject.Inject
 @HiltViewModel
 class QuizScreenViewModel @Inject constructor(
     private val getPokemonQuizRoundDataUseCase: GetPokemonQuizRoundDataUseCase,
-    private val determineCorrectPokemonSelectedUseCase: DetermineCorrectPokemonSelectedUseCase
+    private val determineCorrectPokemonSelectedUseCase: DetermineCorrectPokemonSelectedUseCase,
+    private val fetchPokemonUseCase: FetchPokemonUseCase
 ) :
     ViewModel() {
 
@@ -45,8 +47,14 @@ class QuizScreenViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.Main) {
             val currentScreenState = quizScreenUIState.value
 
+            viewModelScope.launch {
+                fetchPokemonUseCase.execute()
+            }
             if (currentScreenState is QuizRoundDataReady) {
                 val roundState = withContext(Dispatchers.IO) {
+                    //Load the pokemon first
+                    fetchPokemonUseCase.execute()
+
                     if (determineCorrectPokemonSelectedUseCase.execute(pokemon)) {
                         Correct
                     } else {
@@ -71,7 +79,7 @@ class QuizScreenViewModel @Inject constructor(
             _quizScreenUIState.emit(Loading)
 
             val quizRoundData = withContext(Dispatchers.IO) {
-                delay(1000)
+                fetchPokemonUseCase.execute()
                 QuizRoundDataReady(getPokemonQuizRoundDataUseCase.execute(), Unanswered)
             }
 
