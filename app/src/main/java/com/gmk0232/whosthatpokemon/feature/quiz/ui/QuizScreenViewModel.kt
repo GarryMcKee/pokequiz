@@ -11,7 +11,6 @@ import com.gmk0232.whosthatpokemon.feature.quiz.domain.Pokemon
 import com.gmk0232.whosthatpokemon.feature.quiz.domain.QuizAnswerState.Correct
 import com.gmk0232.whosthatpokemon.feature.quiz.domain.QuizAnswerState.Incorrect
 import com.gmk0232.whosthatpokemon.feature.quiz.domain.QuizAnswerState.Unanswered
-import com.gmk0232.whosthatpokemon.feature.quiz.domain.SetScoreUseCase
 import com.gmk0232.whosthatpokemon.feature.quiz.ui.QuizRoundState.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
