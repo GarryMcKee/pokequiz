@@ -4,10 +4,8 @@ import com.gmk0232.whosthatpokemon.feature.quiz.data.remote.CurrentRoundDao
 import com.gmk0232.whosthatpokemon.feature.quiz.data.remote.CurrentRoundEntity
 import com.gmk0232.whosthatpokemon.feature.quiz.data.remote.PokemonAPI
 import com.gmk0232.whosthatpokemon.feature.quiz.data.remote.PokemonDao
-import com.gmk0232.whosthatpokemon.feature.quiz.data.remote.PokemonDetailResponse
 import com.gmk0232.whosthatpokemon.feature.quiz.data.remote.PokemonEntity
 import com.gmk0232.whosthatpokemon.feature.quiz.domain.CurrentRoundRepository
-import com.gmk0232.whosthatpokemon.feature.quiz.domain.Pokemon
 import com.gmk0232.whosthatpokemon.feature.quiz.domain.PokemonQuizRoundData
 import com.gmk0232.whosthatpokemon.feature.quiz.domain.toPokemon
 

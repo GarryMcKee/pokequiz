@@ -3,7 +3,6 @@ package com.gmk0232.whosthatpokemon.feature.quiz.data.remote
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.gmk0232.whosthatpokemon.feature.quiz.domain.PokemonQuizRoundData
 
 @Entity
 data class CurrentRoundEntity(
