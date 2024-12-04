@@ -187,7 +187,8 @@ private fun PokemonCard(
             Text(
                 "Who's that pokemon?",
                 style = MaterialTheme.typography.headlineLarge,
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth()
             )
 
             AsyncImage(
