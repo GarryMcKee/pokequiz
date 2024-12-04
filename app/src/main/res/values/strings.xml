@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Who\'s that Pokemon</string>
+    <string name="correct_answer_string">Correct!</string>
+    <string name="incorrect_answer_string">Incorrect!</string>
+    <string name="title_label">Who\'s that pokemon?</string>
+    <string name="reload_quiz_button_text">Reload Quiz</string>
+    <string name="score_template_string">Score: %1$s</string>
+    <string name="loading_label">Loading..</string>
 </resources>

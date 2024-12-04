@@ -23,12 +23,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
+import com.gmk0232.whosthatpokemon.R
 import com.gmk0232.whosthatpokemon.feature.quiz.domain.Pokemon
 import com.gmk0232.whosthatpokemon.feature.quiz.domain.PokemonQuizRoundData
 import com.gmk0232.whosthatpokemon.feature.quiz.domain.QuizAnswerState
@@ -83,7 +85,10 @@ fun QuizScreen(
 
         if (isPortrait) {
             Text(
-                "Score: ${quizScreenUIState.score}",
+                stringResource(
+                    R.string.score_template_string,
+                    quizScreenUIState.score
+                ),
                 style = MaterialTheme.typography.labelMedium,
                 textAlign = TextAlign.End,
                 modifier = Modifier.fillMaxWidth()
@@ -111,7 +116,7 @@ fun QuizScreen(
                 QuizRoundState.Loading -> {
                     Column {
                         CircularProgressIndicator()
-                        Text("Loading..")
+                        Text(stringResource(R.string.loading_label))
                     }
                 }
 
@@ -120,7 +125,7 @@ fun QuizScreen(
                         Text(quizScreenUIState.quizRoundState.message)
                         Button(onClick = onTryAgainSelected) {
                             Text(
-                                "Reload Quiz",
+                                stringResource(R.string.reload_quiz_button_text),
                                 style = MaterialTheme.typography.bodyLarge,
                                 textAlign = TextAlign.Center,
                                 modifier = Modifier.width(100.dp)
@@ -144,7 +149,10 @@ fun QuizScreen(
                                 Modifier.weight(2f)
                             )
                             Text(
-                                "Score: ${quizScreenUIState.score}",
+                                stringResource(
+                                    R.string.score_template_string,
+                                    quizScreenUIState.score
+                                ),
                                 style = MaterialTheme.typography.labelMedium,
                                 textAlign = TextAlign.End,
                                 modifier = Modifier.fillMaxWidth()
@@ -165,7 +173,7 @@ fun QuizScreen(
                         Text(quizScreenUIState.quizRoundState.message)
                         Button(onClick = onTryAgainSelected) {
                             Text(
-                                "Reload Quiz",
+                                stringResource(R.string.reload_quiz_button_text),
                                 style = MaterialTheme.typography.bodyLarge,
                                 textAlign = TextAlign.Center,
                                 modifier = Modifier.width(100.dp)
@@ -240,7 +248,7 @@ private fun PokemonCard(
     ) {
         Column(modifier = Modifier.padding(8.dp)) {
             Text(
-                "Who's that pokemon?",
+                stringResource(R.string.title_label),
                 style = MaterialTheme.typography.headlineLarge,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth()
@@ -261,17 +269,19 @@ private fun PokemonCard(
             )
 
             if (quizRoundState.quizAnswerState == QuizAnswerState.Correct) {
-                Text("Correct!")
+                Text(stringResource(R.string.correct_answer_string))
             }
 
             if (quizRoundState.quizAnswerState == QuizAnswerState.Incorrect) {
-                Text("Incorrect!")
+                Text(stringResource(R.string.incorrect_answer_string))
             }
         }
     }
 }
 
-@Preview
+@Preview(name = "Quiz Screen - Portrait",
+    widthDp = 410,
+    heightDp = 890)
 @Composable
 fun QuizScreenPreview(
 ) {
@@ -281,7 +291,6 @@ fun QuizScreenPreview(
 
 @Preview(
     name = "Quiz Screen - Landscape",
-    showBackground = true,
     widthDp = 890,
     heightDp = 410
 )
