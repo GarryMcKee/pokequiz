@@ -41,12 +41,9 @@ class MainActivity : ComponentActivity() {
 fun QuizBar() {
     Row(modifier = Modifier
         .fillMaxWidth()
-        .background(color = Color.Magenta)
+        .background(color = Color.Transparent)
         .padding(top = 16.dp, bottom = 16.dp)
         ) {
-        Spacer(Modifier.weight(1f))
-        Text("Who's that pokemon?")
-        Spacer(Modifier.weight(1f))
     }
 }
 
