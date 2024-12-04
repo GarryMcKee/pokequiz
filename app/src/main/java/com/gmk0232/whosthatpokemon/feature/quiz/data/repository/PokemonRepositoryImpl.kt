@@ -3,8 +3,8 @@ package com.gmk0232.whosthatpokemon.feature.quiz.data.repository
 import androidx.compose.ui.text.capitalize
 import androidx.compose.ui.text.intl.Locale
 import com.gmk0232.whosthatpokemon.feature.quiz.data.remote.PokemonAPI
-import com.gmk0232.whosthatpokemon.feature.quiz.data.remote.PokemonDao
-import com.gmk0232.whosthatpokemon.feature.quiz.data.remote.toPokemonEntityList
+import com.gmk0232.whosthatpokemon.feature.quiz.data.local.PokemonDao
+import com.gmk0232.whosthatpokemon.feature.quiz.data.local.toPokemonEntityList
 import com.gmk0232.whosthatpokemon.feature.quiz.domain.PokemonRepository
 
 const val POKEMON_LIMIT = 150

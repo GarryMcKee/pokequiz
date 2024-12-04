@@ -1,8 +1,9 @@
-package com.gmk0232.whosthatpokemon.feature.quiz.data.remote
+package com.gmk0232.whosthatpokemon.feature.quiz.data.local
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.gmk0232.whosthatpokemon.feature.quiz.data.remote.PokemonListResponse
 
 
 @Entity

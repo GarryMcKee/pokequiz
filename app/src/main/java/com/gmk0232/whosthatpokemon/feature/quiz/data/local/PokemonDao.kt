@@ -1,4 +1,4 @@
-package com.gmk0232.whosthatpokemon.feature.quiz.data.remote
+package com.gmk0232.whosthatpokemon.feature.quiz.data.local
 
 import androidx.room.Dao
 import androidx.room.Insert

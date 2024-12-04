@@ -58,8 +58,10 @@ dependencies {
     implementation (libs.moshi.kotlin) // Moshi Kotlin adapter
     implementation (libs.androidx.navigation.compose)
     implementation(libs.androidx.hilt.navigation.compose)
+    implementation (libs.androidx.datastore.preferences)
 
     implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.datastore.core.android)
 
     // If this project only uses Java source, use the Java annotationProcessor
     // No additional plugins are necessary

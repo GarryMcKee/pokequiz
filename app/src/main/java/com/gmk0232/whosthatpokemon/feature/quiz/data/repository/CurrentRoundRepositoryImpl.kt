@@ -1,10 +1,10 @@
 package com.gmk0232.whosthatpokemon.feature.quiz.data.repository
 
-import com.gmk0232.whosthatpokemon.feature.quiz.data.remote.CurrentRoundDao
-import com.gmk0232.whosthatpokemon.feature.quiz.data.remote.CurrentRoundEntity
+import com.gmk0232.whosthatpokemon.feature.quiz.data.local.CurrentRoundDao
+import com.gmk0232.whosthatpokemon.feature.quiz.data.local.CurrentRoundEntity
 import com.gmk0232.whosthatpokemon.feature.quiz.data.remote.PokemonAPI
-import com.gmk0232.whosthatpokemon.feature.quiz.data.remote.PokemonDao
-import com.gmk0232.whosthatpokemon.feature.quiz.data.remote.PokemonEntity
+import com.gmk0232.whosthatpokemon.feature.quiz.data.local.PokemonDao
+import com.gmk0232.whosthatpokemon.feature.quiz.data.local.PokemonEntity
 import com.gmk0232.whosthatpokemon.feature.quiz.domain.CurrentRoundRepository
 import com.gmk0232.whosthatpokemon.feature.quiz.domain.PokemonQuizRoundData
 import com.gmk0232.whosthatpokemon.feature.quiz.domain.toPokemon

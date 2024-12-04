@@ -1,6 +1,6 @@
 package com.gmk0232.whosthatpokemon.feature.quiz.domain
 
-import com.gmk0232.whosthatpokemon.feature.quiz.data.remote.PokemonEntity
+import com.gmk0232.whosthatpokemon.feature.quiz.data.local.PokemonEntity
 
 data class Pokemon(val name: String, val number: Int, val imageUrl: String)
 
