@@ -1,7 +1,9 @@
 package com.gmk0232.whosthatpokemon.feature.quiz.ui
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.gmk0232.whosthatpokemon.feature.quiz.data.repository.FetchPokemonException
 import com.gmk0232.whosthatpokemon.feature.quiz.domain.DetermineCorrectPokemonSelectedUseCase
 import com.gmk0232.whosthatpokemon.feature.quiz.domain.GetPokemonQuizRoundDataUseCase
 import com.gmk0232.whosthatpokemon.feature.quiz.domain.GetScoreUseCase
@@ -10,8 +12,7 @@ import com.gmk0232.whosthatpokemon.feature.quiz.domain.QuizAnswerState.Correct
 import com.gmk0232.whosthatpokemon.feature.quiz.domain.QuizAnswerState.Incorrect
 import com.gmk0232.whosthatpokemon.feature.quiz.domain.QuizAnswerState.Unanswered
 import com.gmk0232.whosthatpokemon.feature.quiz.domain.SetScoreUseCase
-import com.gmk0232.whosthatpokemon.feature.quiz.ui.QuizRoundState.Loading
-import com.gmk0232.whosthatpokemon.feature.quiz.ui.QuizRoundState.QuizRoundDataReady
+import com.gmk0232.whosthatpokemon.feature.quiz.ui.QuizRoundState.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -29,8 +30,7 @@ class QuizScreenViewModel @Inject constructor(
     private val getPokemonQuizRoundDataUseCase: GetPokemonQuizRoundDataUseCase,
     private val determineCorrectPokemonSelectedUseCase: DetermineCorrectPokemonSelectedUseCase,
     private val getScoreUseCase: GetScoreUseCase
-) :
-    ViewModel() {
+) : ViewModel() {
 
     /*
     If we want to keep the score on screen independent of other data like the round data
@@ -47,23 +47,66 @@ class QuizScreenViewModel @Inject constructor(
         loadQuizRoundData()
     }
 
-    private fun loadQuizRoundData() {
+    fun loadQuizRoundData() {
         viewModelScope.launch(Dispatchers.Main) {
 
-            _quizScreenUIState.emit(_quizScreenUIState.value.copy(quizRoundState = Loading))
-
-            val updatedQuizScreenUIState = withContext(Dispatchers.IO) {
-                val quizRoundState = getPokemonQuizRoundDataUseCase.execute()
-                val currentScore = getScoreUseCase.execute()
-                _quizScreenUIState.value.copy(
-                    quizRoundState = QuizRoundDataReady(
-                        quizRoundState,
-                        Unanswered
-                    ), score = currentScore
-                )
+            _quizScreenUIState.update { currentState ->
+                currentState.copy(quizRoundState = Loading)
             }
 
-            _quizScreenUIState.emit(updatedQuizScreenUIState)
+            val newQuizRoundDataResult = withContext(Dispatchers.IO) {
+                runCatching {
+                    val quizRoundState = getPokemonQuizRoundDataUseCase.execute()
+                    val currentScore = getScoreUseCase.execute()
+                    _quizScreenUIState.value.copy(
+                        quizRoundState = QuizRoundDataReady(
+                            quizRoundState,
+                            Unanswered
+                        ), score = currentScore
+                    )
+                }
+            }
+
+            newQuizRoundDataResult.fold(
+                onSuccess = { state ->
+                    _quizScreenUIState.emit(state)
+                },
+                onFailure = { error ->
+                    onGetNewRoundDataError(error)
+                }
+            )
+
+        }
+    }
+
+    fun onImageLoadError() {
+        Log.e("Error:", "Coil could not load the image")
+        _quizScreenUIState.update {
+            it.copy(quizRoundState = Error("Could not load pokemon image!"))
+        }
+    }
+
+    private fun onGetNewRoundDataError(it: Throwable) {
+        /*
+        If an error occurs, check if it was was FetchPokemonException, indicating we got a server response at least and log it
+        Other wise log a generic error message
+        */
+        Log.e("Error:", it.message ?: "Something went wrong $it")
+        val errorMessage = if (it is FetchPokemonException) {
+            it.message
+        } else {
+            "Something went wrong, please try again"
+        }
+
+        _quizScreenUIState.update { currentState ->
+            currentState.copy(quizRoundState = Loading)
+        }
+        _quizScreenUIState.update {
+            it.copy(
+                quizRoundState = Error(
+                    errorMessage
+                )
+            )
         }
     }
 

@@ -5,7 +5,7 @@ import com.gmk0232.whosthatpokemon.feature.quiz.domain.QuizAnswerState
 
 data class QuizScreenUIState(
     val quizRoundState: QuizRoundState,
-    val score: Int
+    val score: Int,
 )
 
 sealed class QuizRoundState {
@@ -15,4 +15,5 @@ sealed class QuizRoundState {
     ) : QuizRoundState()
 
     data object Loading : QuizRoundState()
+    data class Error(val message: String) : QuizRoundState()
 }

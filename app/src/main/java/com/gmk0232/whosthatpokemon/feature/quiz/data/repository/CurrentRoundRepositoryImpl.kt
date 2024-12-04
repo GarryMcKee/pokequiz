@@ -1,5 +1,6 @@
 package com.gmk0232.whosthatpokemon.feature.quiz.data.repository
 
+import android.util.Log
 import com.gmk0232.whosthatpokemon.feature.quiz.data.local.CurrentRoundDao
 import com.gmk0232.whosthatpokemon.feature.quiz.data.local.CurrentRoundEntity
 import com.gmk0232.whosthatpokemon.feature.quiz.data.remote.PokemonAPI
@@ -48,6 +49,7 @@ class CurrentRoundRepositoryImpl(
         If we don't already have the data required for this pokemon from previous calls
         Fetch the data for the specific pokemon, store and then return it
          */
+        Log.i("Pokenumber", "Loading detail for pokemon number: $pokemonNumber")
         val pokemonEntity = pokemonDao.getPokemonByNumber(pokemonNumber)
         if (pokemonEntity.imageUrl.isEmpty()) {
             val pokemonDetailResponse = pokemonApi.fetchPokemonDetail(pokemonEntity.dataUrl)

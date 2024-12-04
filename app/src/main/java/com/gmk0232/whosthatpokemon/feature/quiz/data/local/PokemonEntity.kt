@@ -16,5 +16,5 @@ data class PokemonEntity(
 
 fun PokemonListResponse.toPokemonEntityList() = this.results
     .mapIndexed { index, pokemonResponse ->
-        PokemonEntity(index, name = pokemonResponse.name, dataUrl = pokemonResponse.url)
+        PokemonEntity(pokemonNumber = index + 1, name = pokemonResponse.name, dataUrl = pokemonResponse.url)
     }

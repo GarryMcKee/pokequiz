@@ -56,14 +56,21 @@ fun QuizRoute() {
 
     QuizScreen(
         quizScreenUIState = quizScreenUIState,
-        onPokemonSelected = quizScreenViewModel::onPokemonSelected
+        onPokemonSelected = quizScreenViewModel::onPokemonSelected,
+        onTryAgainSelected = quizScreenViewModel::loadQuizRoundData,
+        onImageLoadError = quizScreenViewModel::onImageLoadError
     )
 }
 
+
+//The linter doesn't seem to be having issues with the orientation calculation and thinks it will always be true
+@Suppress("KotlinConstantConditions")
 @Composable
 fun QuizScreen(
     quizScreenUIState: QuizScreenUIState,
-    onPokemonSelected: (Pokemon) -> Unit
+    onPokemonSelected: (Pokemon) -> Unit,
+    onTryAgainSelected: () -> Unit,
+    onImageLoadError: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -88,7 +95,8 @@ fun QuizScreen(
                     PokemonCard(
                         quizData,
                         isPortrait,
-                        Modifier.weight(2f)
+                        Modifier.weight(2f),
+                        onImageLoadError
                     )
                     Spacer(Modifier.weight(1f))
                     QuizOptions(
@@ -106,13 +114,27 @@ fun QuizScreen(
                         Text("Loading..")
                     }
                 }
+
+                is QuizRoundState.Error -> {
+                    Column {
+                        Text(quizScreenUIState.quizRoundState.message)
+                        Button(onClick = onTryAgainSelected) {
+                            Text(
+                                "Reload Quiz",
+                                style = MaterialTheme.typography.bodyLarge,
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier.width(100.dp)
+                            )
+                        }
+                    }
+                }
             }
         } else {
             when (quizScreenUIState.quizRoundState) {
                 is QuizRoundState.QuizRoundDataReady -> {
                     Row(Modifier.padding(8.dp)) {
                         val quizData = quizScreenUIState.quizRoundState
-                        PokemonCard(quizData, isPortrait, Modifier.weight(2f))
+                        PokemonCard(quizData, isPortrait, Modifier.weight(2f), onImageLoadError)
                         Spacer(Modifier.weight(1f))
                         Column(Modifier.weight(2f)) {
                             QuizOptions(
@@ -135,6 +157,20 @@ fun QuizScreen(
                     Column {
                         CircularProgressIndicator()
                         Text("Loading..")
+                    }
+                }
+
+                is QuizRoundState.Error -> {
+                    Column {
+                        Text(quizScreenUIState.quizRoundState.message)
+                        Button(onClick = onTryAgainSelected) {
+                            Text(
+                                "Reload Quiz",
+                                style = MaterialTheme.typography.bodyLarge,
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier.width(100.dp)
+                            )
+                        }
                     }
                 }
             }
@@ -190,7 +226,8 @@ private fun QuizOptions(
 private fun PokemonCard(
     quizRoundState: QuizRoundState.QuizRoundDataReady,
     isPortrait: Boolean = true,
-    modifier: Modifier
+    modifier: Modifier,
+    onImageLoadError: () -> Unit
 ) {
     Card(
         modifier = modifier.then(
@@ -217,6 +254,9 @@ private fun PokemonCard(
                     ColorFilter.tint(Color.Black)
                 } else {
                     null
+                },
+                onError = {
+                    onImageLoadError()
                 }
             )
 
@@ -235,17 +275,17 @@ private fun PokemonCard(
 @Composable
 fun QuizScreenPreview(
 ) {
-    QuizScreen(testData, {})
+    QuizScreen(testData, {}, {}, {})
 }
 
 
 @Preview(
     name = "Quiz Screen - Landscape",
     showBackground = true,
-    widthDp = 891,  // Adjust width for landscape
-    heightDp = 411  // Adjust height for landscape
+    widthDp = 890,
+    heightDp = 410
 )
 @Composable
 fun QuizScreenLandscapePreview() {
-    QuizScreen(testData, {})
+    QuizScreen(testData, {}, {}, {})
 }
