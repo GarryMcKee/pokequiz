@@ -65,11 +65,12 @@ dependencies {
     // No additional plugins are necessary
     kapt(libs.androidx.room.compiler)
     implementation(libs.androidx.room.ktx)
-
-
     kapt(libs.hilt.android.compiler)
     //noinspection KaptUsageInsteadOfKsp
     kapt (libs.moshi.kotlin.codegen)
+
+    implementation(libs.coil.compose)
+    implementation(libs.coil.network.okhttp)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
