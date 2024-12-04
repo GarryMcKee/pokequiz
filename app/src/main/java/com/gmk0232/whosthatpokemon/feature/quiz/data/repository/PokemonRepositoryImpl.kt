@@ -1,5 +1,7 @@
 package com.gmk0232.whosthatpokemon.feature.quiz.data.repository
 
+import androidx.compose.ui.text.capitalize
+import androidx.compose.ui.text.intl.Locale
 import com.gmk0232.whosthatpokemon.feature.quiz.data.remote.PokemonAPI
 import com.gmk0232.whosthatpokemon.feature.quiz.data.remote.PokemonDao
 import com.gmk0232.whosthatpokemon.feature.quiz.data.remote.toPokemonEntityList
@@ -17,6 +19,7 @@ class PokemonRepositoryImpl(
 
         if (pokemonResponse.isSuccessful) {
             val pokemonEntities = pokemonResponse.body()!!.toPokemonEntityList()
+                .map { it.copy(name = it.name.capitalize(Locale.current)) }
             pokemonDao.insertPokemon(pokemonEntities)
         } else {
             throw FetchPokemonException(
