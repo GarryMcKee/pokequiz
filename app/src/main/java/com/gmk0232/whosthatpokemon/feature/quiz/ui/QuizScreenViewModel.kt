@@ -5,16 +5,17 @@ import androidx.lifecycle.viewModelScope
 import com.gmk0232.whosthatpokemon.feature.quiz.domain.DetermineCorrectPokemonSelectedUseCase
 import com.gmk0232.whosthatpokemon.feature.quiz.domain.GetPokemonQuizRoundDataUseCase
 import com.gmk0232.whosthatpokemon.feature.quiz.domain.Pokemon
-import com.gmk0232.whosthatpokemon.feature.quiz.domain.QuizRoundState.Correct
-import com.gmk0232.whosthatpokemon.feature.quiz.domain.QuizRoundState.Incorrect
-import com.gmk0232.whosthatpokemon.feature.quiz.domain.QuizRoundState.Unanswered
-import com.gmk0232.whosthatpokemon.feature.quiz.ui.QuizScreenUIState.Loading
-import com.gmk0232.whosthatpokemon.feature.quiz.ui.QuizScreenUIState.QuizRoundDataReady
+import com.gmk0232.whosthatpokemon.feature.quiz.domain.QuizAnswerState.Correct
+import com.gmk0232.whosthatpokemon.feature.quiz.domain.QuizAnswerState.Incorrect
+import com.gmk0232.whosthatpokemon.feature.quiz.domain.QuizAnswerState.Unanswered
+import com.gmk0232.whosthatpokemon.feature.quiz.ui.QuizRoundState.Loading
+import com.gmk0232.whosthatpokemon.feature.quiz.ui.QuizRoundState.QuizRoundDataReady
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -28,7 +29,14 @@ class QuizScreenViewModel @Inject constructor(
 ) :
     ViewModel() {
 
-    private val _quizScreenUIState: MutableStateFlow<QuizScreenUIState> = MutableStateFlow(Loading)
+    /*
+    If we want to keep the score on screen independent of other data like the round data
+    We could model it as it's own separate state object which can have a loading state too
+    For now we'll initialise with a default value of -1 to signal to the UI it's not loaded yet
+     */
+    private val _quizScreenUIState: MutableStateFlow<QuizScreenUIState> = MutableStateFlow(
+        QuizScreenUIState(quizRoundState = Loading, -1)
+    )
 
     val quizScreenUIState = _quizScreenUIState.asStateFlow()
 
@@ -39,25 +47,25 @@ class QuizScreenViewModel @Inject constructor(
     private fun loadQuizRoundData() {
         viewModelScope.launch(Dispatchers.Main) {
 
-            _quizScreenUIState.emit(Loading)
+            _quizScreenUIState.emit(_quizScreenUIState.value.copy(quizRoundState = Loading))
 
-            val quizRoundData = withContext(Dispatchers.IO) {
+            val quizRoundState = withContext(Dispatchers.IO) {
                 QuizRoundDataReady(getPokemonQuizRoundDataUseCase.execute(), Unanswered)
             }
 
-            _quizScreenUIState.emit(quizRoundData)
+            _quizScreenUIState.emit((_quizScreenUIState.value.copy(quizRoundState = quizRoundState)))
         }
     }
 
     fun onPokemonSelected(pokemon: Pokemon) {
         viewModelScope.launch(Dispatchers.Main) {
-            val currentState = _quizScreenUIState.value
-            if (currentState is QuizRoundDataReady) {
+            val currentQuizRoundState = _quizScreenUIState.value.quizRoundState
+            if (currentQuizRoundState is QuizRoundDataReady) {
                 val resultState = withContext(Dispatchers.IO) {
                     if (determineCorrectPokemonSelectedUseCase.execute(pokemon)) {
-                        currentState.copy(quizRoundState = Correct)
+                        currentQuizRoundState.copy(quizAnswerState = Correct)
                     } else {
-                        currentState.copy(quizRoundState = Incorrect)
+                        currentQuizRoundState.copy(quizAnswerState = Incorrect)
                     }
                 }
                 showResultAndLoadNextRound(resultState)
@@ -65,8 +73,8 @@ class QuizScreenViewModel @Inject constructor(
         }
     }
 
-    private suspend fun showResultAndLoadNextRound(resultState: QuizScreenUIState) {
-        _quizScreenUIState.emit(resultState)
+    private suspend fun showResultAndLoadNextRound(resultState: QuizRoundState) {
+        _quizScreenUIState.update { it.copy(quizRoundState = resultState) }
 
         withContext(Dispatchers.IO) {
             delay(RESULT_DISPLAY_TIMEOUT)
