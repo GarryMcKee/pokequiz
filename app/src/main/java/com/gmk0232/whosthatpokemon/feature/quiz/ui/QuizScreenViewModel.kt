@@ -3,7 +3,6 @@ package com.gmk0232.whosthatpokemon.feature.quiz.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gmk0232.whosthatpokemon.feature.quiz.domain.DetermineCorrectPokemonSelectedUseCase
-import com.gmk0232.whosthatpokemon.feature.quiz.domain.FetchPokemonUseCase
 import com.gmk0232.whosthatpokemon.feature.quiz.domain.GetPokemonQuizRoundDataUseCase
 import com.gmk0232.whosthatpokemon.feature.quiz.domain.Pokemon
 import com.gmk0232.whosthatpokemon.feature.quiz.domain.QuizRoundState.Correct
@@ -20,10 +19,13 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
+const val RESULT_DISPLAY_TIMEOUT = 1500L
+
 @HiltViewModel
 class QuizScreenViewModel @Inject constructor(
     private val getPokemonQuizRoundDataUseCase: GetPokemonQuizRoundDataUseCase,
-    private val determineCorrectPokemonSelectedUseCase: DetermineCorrectPokemonSelectedUseCase, ) :
+    private val determineCorrectPokemonSelectedUseCase: DetermineCorrectPokemonSelectedUseCase,
+) :
     ViewModel() {
 
     private val _quizScreenUIState: MutableStateFlow<QuizScreenUIState> = MutableStateFlow(Loading)
@@ -34,8 +36,17 @@ class QuizScreenViewModel @Inject constructor(
         loadQuizRoundData()
     }
 
-    fun refresh() {
-        loadQuizRoundData()
+    private fun loadQuizRoundData() {
+        viewModelScope.launch(Dispatchers.Main) {
+
+            _quizScreenUIState.emit(Loading)
+
+            val quizRoundData = withContext(Dispatchers.IO) {
+                QuizRoundDataReady(getPokemonQuizRoundDataUseCase.execute(), Unanswered)
+            }
+
+            _quizScreenUIState.emit(quizRoundData)
+        }
     }
 
     fun onPokemonSelected(pokemon: Pokemon) {
@@ -58,23 +69,9 @@ class QuizScreenViewModel @Inject constructor(
         _quizScreenUIState.emit(resultState)
 
         withContext(Dispatchers.IO) {
-            delay(5000)
+            delay(RESULT_DISPLAY_TIMEOUT)
         }
 
         loadQuizRoundData()
-    }
-
-    private fun loadQuizRoundData() {
-        viewModelScope.launch(Dispatchers.Main) {
-
-            _quizScreenUIState.emit(Loading)
-
-            val quizRoundData = withContext(Dispatchers.IO) {
-                //fetchPokemonUseCase.execute()
-                QuizRoundDataReady(getPokemonQuizRoundDataUseCase.execute(), Unanswered)
-            }
-
-            _quizScreenUIState.emit(quizRoundData)
-        }
     }
 }

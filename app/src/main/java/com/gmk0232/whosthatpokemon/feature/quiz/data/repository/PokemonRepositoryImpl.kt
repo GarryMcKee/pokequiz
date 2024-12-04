@@ -11,8 +11,7 @@ const val POKEMON_OFFSET = 0
 class PokemonRepositoryImpl(
     private val pokemonDao: PokemonDao,
     private val pokemonApi: PokemonAPI
-) :
-    PokemonRepository {
+) : PokemonRepository {
     override suspend fun fetchPokemon() {
         val pokemonResponse = pokemonApi.fetchPokemon(POKEMON_LIMIT, POKEMON_OFFSET)
 
@@ -28,6 +27,10 @@ class PokemonRepositoryImpl(
             )
         }
 
+    }
+
+    override suspend fun checkPokemonListReady(): Boolean {
+        return pokemonDao.getAllPokemon().isNotEmpty()
     }
 }
 

@@ -3,29 +3,53 @@ package com.gmk0232.whosthatpokemon.feature.quiz.domain
 const val MINIMUM_POKEMON_NUMBER = 1
 const val MAXIMUM_POKEMON_NUMBER = 150
 
+/*
+While figuring out what pokemon to actually show, we only need their number
+Lets make a list of possible numbers based on the range of pokemon supported in the quiz
+ */
 val possiblePokemonNumbers = (MINIMUM_POKEMON_NUMBER..MAXIMUM_POKEMON_NUMBER).toList()
 
-class GetPokemonQuizRoundDataUseCaseImpl(private val currentRoundRepository: CurrentRoundRepository) :
+class GetPokemonQuizRoundDataUseCaseImpl(
+    private val currentRoundRepository: CurrentRoundRepository,
+    private val pokemonRepository: PokemonRepository
+) :
     GetPokemonQuizRoundDataUseCase {
     override suspend fun execute(): PokemonQuizRoundData {
 
-        val pokemonToGuessNumber = possiblePokemonNumbers.random()
+        //If we don't have any pokemon data loaded yet, load it first then create the round
+        return if (pokemonRepository.checkPokemonListReady()) {
+            createQuizRound()
+        } else {
+            pokemonRepository.fetchPokemon()
+            createQuizRound()
+        }
 
-        val pokemonNumberOptions = mutableListOf(pokemonToGuessNumber)
+    }
+
+    private suspend fun createQuizRound(): PokemonQuizRoundData {
+        //Get a random pokemon number the user will guess
+        val pokemonNumberToGuess = possiblePokemonNumbers.random()
+
+        /*
+        Create a list of 4 options for the user to select, including the pokemon to guess
+         */
+        val pokemonNumberOptions = mutableListOf(pokemonNumberToGuess)
         repeat(3) {
             pokemonNumberOptions.add(getRandomPokemon(pokemonNumberOptions))
         }
 
         /*
-        We could return the round data directly here but to keep the single source of truth flow we'll return it from the DB instead
-        If we required this round data to be dynamic this means we'll have less refactoring to do if we converted to a flow for example
+        Store the current round data in the database
          */
-        currentRoundRepository.setCurrentRound(pokemonToGuessNumber, pokemonNumberOptions)
+        currentRoundRepository.setCurrentRound(pokemonNumberToGuess, pokemonNumberOptions)
 
         return currentRoundRepository.getCurrentRound()
     }
 
     private fun getRandomPokemon(currentPokemonNumbers: List<Int>): Int {
+        /*
+        Get a random pokemon number that we haven't already gotten
+         */
         return possiblePokemonNumbers.filter {
             filterPokemonAlreadyAdded(
                 currentPokemonNumbers,

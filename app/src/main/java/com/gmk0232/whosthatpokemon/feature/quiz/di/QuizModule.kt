@@ -25,8 +25,14 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 @InstallIn(ViewModelComponent::class)
 class QuizModule {
     @Provides
-    fun providePokemonQuizRoundDataUseCase(currentRoundRepository: CurrentRoundRepository): GetPokemonQuizRoundDataUseCase {
-        return GetPokemonQuizRoundDataUseCaseImpl(currentRoundRepository)
+    fun providePokemonQuizRoundDataUseCase(
+        currentRoundRepository: CurrentRoundRepository,
+        pokemonRepository: PokemonRepository
+    ): GetPokemonQuizRoundDataUseCase {
+        return GetPokemonQuizRoundDataUseCaseImpl(
+            currentRoundRepository,
+            pokemonRepository = pokemonRepository
+        )
     }
 
     @Provides

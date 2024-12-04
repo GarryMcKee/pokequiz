@@ -5,9 +5,11 @@ import com.gmk0232.whosthatpokemon.feature.quiz.data.remote.CurrentRoundEntity
 import com.gmk0232.whosthatpokemon.feature.quiz.data.remote.PokemonAPI
 import com.gmk0232.whosthatpokemon.feature.quiz.data.remote.PokemonDao
 import com.gmk0232.whosthatpokemon.feature.quiz.data.remote.PokemonDetailResponse
+import com.gmk0232.whosthatpokemon.feature.quiz.data.remote.PokemonEntity
 import com.gmk0232.whosthatpokemon.feature.quiz.domain.CurrentRoundRepository
 import com.gmk0232.whosthatpokemon.feature.quiz.domain.Pokemon
 import com.gmk0232.whosthatpokemon.feature.quiz.domain.PokemonQuizRoundData
+import com.gmk0232.whosthatpokemon.feature.quiz.domain.toPokemon
 
 class CurrentRoundRepositoryImpl(
     private val currentRoundDao: CurrentRoundDao,
@@ -20,7 +22,6 @@ class CurrentRoundRepositoryImpl(
         selectedPokemonNumber: Int,
         pokemonNumberOptions: List<Int>
     ) {
-
         val currentRoundEntity = CurrentRoundEntity(
             pokemonToGuess = selectedPokemonNumber,
             pokemonChoice1 = pokemonNumberOptions[1],
@@ -33,27 +34,10 @@ class CurrentRoundRepositoryImpl(
 
     override suspend fun getCurrentRound(): PokemonQuizRoundData {
         val currentRound = currentRoundDao.getCurrentRound()
-
-        val pokemonToGuess = Pokemon(
-            name = pokemonDao.getPokemonByNumber(currentRound.pokemonToGuess).name,
-            number = currentRound.pokemonToGuess,
-            imageUrl = ""
-        )
-        val pokemonChoice1 = Pokemon(
-            name = pokemonDao.getPokemonByNumber(currentRound.pokemonChoice1).name,
-            number = currentRound.pokemonChoice1,
-            imageUrl = ""
-        )
-        val pokemonChoice2 = Pokemon(
-            name = pokemonDao.getPokemonByNumber(currentRound.pokemonChoice2).name,
-            number = currentRound.pokemonChoice2,
-            imageUrl = ""
-        )
-        val pokemonChoice3 = Pokemon(
-            name = pokemonDao.getPokemonByNumber(currentRound.pokemonChoice3).name,
-            number = currentRound.pokemonChoice3,
-            imageUrl = ""
-        )
+        val pokemonToGuess = getPokemonDetailForNumber(currentRound.pokemonToGuess).toPokemon()
+        val pokemonChoice1 = getPokemonDetailForNumber(currentRound.pokemonChoice1).toPokemon()
+        val pokemonChoice2 = getPokemonDetailForNumber(currentRound.pokemonChoice2).toPokemon()
+        val pokemonChoice3 = getPokemonDetailForNumber(currentRound.pokemonChoice3).toPokemon()
 
         return PokemonQuizRoundData(
             pokemonToGuess,
@@ -61,17 +45,31 @@ class CurrentRoundRepositoryImpl(
         )
     }
 
-    private suspend fun getPokemonDetailForUrl(url: String): PokemonDetailResponse {
-        val pokemonDetailResponse = pokemonApi.fetchPokemonDetail(url)
-        if (pokemonDetailResponse.isSuccessful) {
-            return pokemonDetailResponse.body()!!
+    private suspend fun getPokemonDetailForNumber(pokemonNumber: Int): PokemonEntity {
+        /*
+        If we don't already have the data required for this pokemon from previous calls
+        Fetch the data for the specific pokemon, store and then return it
+         */
+        val pokemonEntity = pokemonDao.getPokemonByNumber(pokemonNumber)
+        if (pokemonEntity.imageUrl.isEmpty()) {
+            val pokemonDetailResponse = pokemonApi.fetchPokemonDetail(pokemonEntity.dataUrl)
+            if (pokemonDetailResponse.isSuccessful) {
+                val imageUrl =
+                    pokemonDetailResponse.body()!!.sprites.other.officialArtworkUrl.frontDefaultUrl
+                val updatedPokemonEntity = pokemonEntity.copy(imageUrl = imageUrl)
+                pokemonDao.insertPokemon(updatedPokemonEntity)
+                return updatedPokemonEntity
+            } else {
+                throw FetchPokemonException(
+                    "Error code: ${pokemonDetailResponse.code()} ${
+                        pokemonDetailResponse.errorBody()
+                            ?.string() ?: "Something went wrong when fetching pokemon"
+                    }"
+                )
+            }
         } else {
-            throw FetchPokemonException(
-                "Error code: ${pokemonDetailResponse.code()} ${
-                    pokemonDetailResponse.errorBody()
-                        ?.string() ?: "Something went wrong when fetching pokemon"
-                }"
-            )
+            return pokemonEntity
         }
+
     }
 }
