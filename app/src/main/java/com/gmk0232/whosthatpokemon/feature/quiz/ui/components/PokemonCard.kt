@@ -68,17 +68,16 @@ fun PokemonCard(
                     )
                     PokeballAnimation()
                 }
+            }
 
-                if (quizRoundState.quizAnswerState == QuizAnswerState.Incorrect) {
-                    Column {
-                        ResultText(
-                            correctPokemonName = quizRoundState.pokemonQuizRoundData.pokemonToGuess.name,
-                            isCorrect = false
-                        )
-                        PokeballAnimation()
-                    }
+            if (quizRoundState.quizAnswerState == QuizAnswerState.Incorrect) {
+                Column {
+                    ResultText(
+                        correctPokemonName = quizRoundState.pokemonQuizRoundData.pokemonToGuess.name,
+                        isCorrect = false
+                    )
+                    PokeballAnimation()
                 }
-
             }
         }
     }
