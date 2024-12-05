@@ -4,6 +4,8 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
+import androidx.room.Upsert
 
 @Dao
 interface PokemonDao {
@@ -17,6 +19,6 @@ interface PokemonDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertPokemon(pokemon: List<PokemonEntity>)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertPokemon(pokemon: PokemonEntity)
+    @Update
+    fun updatePokemon(pokemon: PokemonEntity)
 }
