@@ -6,6 +6,8 @@ const val MAXIMUM_POKEMON_NUMBER = 150
 /*
 While figuring out what pokemon to actually show, we only need their number
 Lets make a list of possible numbers based on the range of pokemon supported in the quiz
+
+We could also make this more testable by injecting a random number provider
  */
 val possiblePokemonNumbers = (MINIMUM_POKEMON_NUMBER..MAXIMUM_POKEMON_NUMBER).toList()
 
