@@ -22,7 +22,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-const val RESULT_DISPLAY_TIMEOUT = 1500L
+const val RESULT_DISPLAY_TIMEOUT = 3000L
 
 @HiltViewModel
 class QuizScreenViewModel @Inject constructor(
