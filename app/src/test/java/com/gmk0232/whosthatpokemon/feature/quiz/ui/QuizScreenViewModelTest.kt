@@ -40,6 +40,11 @@ val testQuizScreenUIState = QuizScreenUIState(
     ), score = 77
 )
 
+/*
+It's a little difficult to test all the state in the view model, particularly the loading state
+Libraries like Turbine might help here but this probably betrays the fact the view model is doing a bit too much
+We could probably put the UseCases to task a bit more and let them emit flows to make this a bit easier
+ */
 class QuizScreenViewModelTest {
     private val getPokemonQuizRoundDataUseCase: GetPokemonQuizRoundDataUseCase = mock()
     private val determineCorrectPokemonSelectedUseCase: DetermineCorrectPokemonSelectedUseCase =

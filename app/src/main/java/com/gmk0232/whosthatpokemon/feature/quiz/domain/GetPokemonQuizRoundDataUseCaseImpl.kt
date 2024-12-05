@@ -1,5 +1,7 @@
 package com.gmk0232.whosthatpokemon.feature.quiz.domain
 
+import android.util.Log
+
 const val MINIMUM_POKEMON_NUMBER = 1
 const val MAXIMUM_POKEMON_NUMBER = 150
 
@@ -43,9 +45,16 @@ class GetPokemonQuizRoundDataUseCaseImpl(
         /*
         Store the current round data in the database
          */
-        currentRoundRepository.setCurrentRound(pokemonNumberToGuess, pokemonNumberOptions)
+        currentRoundRepository.setCurrentRound(
+            pokemonNumberToGuess,
+            pokemonNumberOptions
+        )
 
-        return currentRoundRepository.getCurrentRound()
+        val currentRound = currentRoundRepository.getCurrentRound()
+        val shuffledRound =
+            currentRound.copy(pokemonOptions = currentRound.pokemonOptions.shuffled())
+
+        return shuffledRound
     }
 
     private fun getRandomPokemon(currentPokemonNumbers: List<Int>): Int {

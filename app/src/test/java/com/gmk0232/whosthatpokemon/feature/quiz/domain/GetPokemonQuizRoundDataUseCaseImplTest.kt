@@ -45,7 +45,9 @@ class GetPokemonQuizRoundDataUseCaseImplTest {
             val result = getPokemonQuizRoundDataUseCaseImpl.execute()
 
             verify(pokemonRepository, times(1)).fetchPokemon()
-            assert(result == testQuizRoundData)
+            assert(result.pokemonToGuess == testQuizRoundData.pokemonToGuess)
+            assert(result.pokemonOptions.containsAll(testQuizRoundData.pokemonOptions))
+
         }
 
     @Test
@@ -57,6 +59,8 @@ class GetPokemonQuizRoundDataUseCaseImplTest {
             val result = getPokemonQuizRoundDataUseCaseImpl.execute()
 
             verify(pokemonRepository, never()).fetchPokemon()
-            assert(result == testQuizRoundData)
+            assert(result.pokemonToGuess == testQuizRoundData.pokemonToGuess)
+            assert(result.pokemonOptions.containsAll(testQuizRoundData.pokemonOptions))
+
         }
 }
