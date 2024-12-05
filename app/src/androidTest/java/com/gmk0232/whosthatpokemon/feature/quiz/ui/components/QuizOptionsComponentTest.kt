@@ -12,7 +12,6 @@ import com.gmk0232.whosthatpokemon.feature.quiz.ui.QuizRoundState
 import com.gmk0232.whosthatpokemon.feature.quiz.ui.QuizScreenUIState
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.Mockito.any
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.never
 import org.mockito.Mockito.times
@@ -26,26 +25,6 @@ val testQuizRoundData = PokemonQuizRoundData(
         Pokemon("Pikachu", 23, "")
 
     )
-)
-val testUnansweredQuizData = QuizScreenUIState(
-    quizRoundState = QuizRoundState.QuizRoundDataReady(
-        pokemonQuizRoundData = testQuizRoundData,
-        QuizAnswerState.Unanswered
-    ), score = 77
-)
-
-val testCorrectQuizData = QuizScreenUIState(
-    quizRoundState = QuizRoundState.QuizRoundDataReady(
-        pokemonQuizRoundData = testQuizRoundData,
-        QuizAnswerState.Correct
-    ), score = 77
-)
-
-val testInCorrectQuizData = QuizScreenUIState(
-    quizRoundState = QuizRoundState.QuizRoundDataReady(
-        pokemonQuizRoundData = testQuizRoundData,
-        QuizAnswerState.Incorrect
-    ), score = 77
 )
 
 private val onPokemonSelected: (Pokemon) -> Unit = mock()

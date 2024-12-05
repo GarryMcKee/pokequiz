@@ -83,7 +83,7 @@ class QuizScreenViewModelTest {
             quizScreenViewModel.loadQuizRoundData()
 
             val expectedState = QuizScreenUIState(
-                quizRoundState = QuizRoundState.Error(
+                quizRoundState = Error(
                     "401: Test"
                 ), -1
             )
@@ -101,7 +101,7 @@ class QuizScreenViewModelTest {
             quizScreenViewModel.loadQuizRoundData()
 
             val expectedState = QuizScreenUIState(
-                quizRoundState = QuizRoundState.Error(
+                quizRoundState = Error(
                     "Something went wrong, please try again"
                 ), -1
             )

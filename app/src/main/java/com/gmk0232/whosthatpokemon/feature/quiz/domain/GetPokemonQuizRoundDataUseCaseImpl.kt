@@ -1,7 +1,5 @@
 package com.gmk0232.whosthatpokemon.feature.quiz.domain
 
-import android.util.Log
-
 const val MINIMUM_POKEMON_NUMBER = 1
 const val MAXIMUM_POKEMON_NUMBER = 150
 
