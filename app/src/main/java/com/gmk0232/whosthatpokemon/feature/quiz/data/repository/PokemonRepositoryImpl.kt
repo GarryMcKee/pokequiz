@@ -37,7 +37,7 @@ class PokemonRepositoryImpl(
     }
 }
 
-class FetchPokemonException(private val errorMessage: String) : Throwable() {
+class FetchPokemonException(private val errorMessage: String) : RuntimeException() {
     override val message: String
         get() = errorMessage
 }

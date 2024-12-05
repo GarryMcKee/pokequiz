@@ -57,7 +57,7 @@ class CurrentRoundRepositoryImpl(
                 val imageUrl =
                     pokemonDetailResponse.body()!!.sprites.other.officialArtworkUrl.frontDefaultUrl
                 val updatedPokemonEntity = pokemonEntity.copy(imageUrl = imageUrl)
-                pokemonDao.insertPokemon(updatedPokemonEntity)
+                pokemonDao.updatePokemon(updatedPokemonEntity)
                 return updatedPokemonEntity
             } else {
                 throw FetchPokemonException(

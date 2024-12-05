@@ -13,7 +13,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-class DatabaseProvider {
+class DatabaseModule {
     @Provides
     @Singleton
     fun providePokeQuizDatabase(@ApplicationContext context: Context): PokeQuizDatabase {
