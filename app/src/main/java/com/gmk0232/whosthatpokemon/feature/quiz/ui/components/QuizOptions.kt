@@ -15,10 +15,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.gmk0232.whosthatpokemon.feature.quiz.domain.Pokemon
 import com.gmk0232.whosthatpokemon.feature.quiz.domain.PokemonQuizRoundData
+import com.gmk0232.whosthatpokemon.feature.quiz.domain.QuizAnswerState
+import com.gmk0232.whosthatpokemon.feature.quiz.domain.QuizAnswerState.*
 
 @Composable
 fun QuizOptions(
     quizData: PokemonQuizRoundData,
+    answerState: QuizAnswerState,
     onPokemonSelected: (Pokemon) -> Unit,
     isPortrait: Boolean = true,
     modifier: Modifier
@@ -45,7 +48,7 @@ fun QuizOptions(
                     pokemonChoices.forEach { pokemonChoice ->
                         Button(onClick = {
                             onPokemonSelected(pokemonChoice)
-                        }) {
+                        }, enabled = answerState == Unanswered) {
                             Text(
                                 pokemonChoice.name,
                                 style = MaterialTheme.typography.bodyLarge,

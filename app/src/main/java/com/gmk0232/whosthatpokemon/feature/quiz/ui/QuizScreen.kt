@@ -100,6 +100,7 @@ fun QuizScreen(
                     Spacer(Modifier.weight(1f))
                     QuizOptions(
                         quizData.pokemonQuizRoundData,
+                        answerState = quizScreenUIState.quizRoundState.quizAnswerState,
                         onPokemonSelected,
                         isPortrait,
                         Modifier.weight(2f)
@@ -138,6 +139,7 @@ fun QuizScreen(
                         Column(Modifier.weight(2f)) {
                             QuizOptions(
                                 quizData.pokemonQuizRoundData,
+                                answerState = quizScreenUIState.quizRoundState.quizAnswerState,
                                 onPokemonSelected,
                                 isPortrait,
                                 Modifier.weight(2f)
