@@ -49,7 +49,6 @@ class CurrentRoundRepositoryImpl(
         If we don't already have the data required for this pokemon from previous calls
         Fetch the data for the specific pokemon, store and then return it
          */
-        Log.i("Pokenumber", "Loading detail for pokemon number: $pokemonNumber")
         val pokemonEntity = pokemonDao.getPokemonByNumber(pokemonNumber)
         if (pokemonEntity.imageUrl.isEmpty()) {
             val pokemonDetailResponse = pokemonApi.fetchPokemonDetail(pokemonEntity.dataUrl)
