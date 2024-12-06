@@ -2,15 +2,16 @@
 
 Who's that Pokemon is an android application that recreates the famous Who's that Pokemon segment of the Pokemon tv show. It fetches all 150 of the original Pokemon and will show a random Pokemon silhouette along with four possible answers, including the correct one. If the user selects correct answer we reveal the Pokemon, add to their score, and move on to the next round with a different Pokemon and set of options.
 
-![image](https://github.com/user-attachments/assets/cb60afae-1b94-4895-b3c5-894e261f07d5)
-![image](https://github.com/user-attachments/assets/d8e05c2a-67b8-4dc8-9243-e79357594521)
-![image](https://github.com/user-attachments/assets/84525437-a9e1-4143-8fdd-fbd44826e57d)
-![image](https://github.com/user-attachments/assets/d7359733-37bf-4d04-a3fd-36c47f7d434f)
-
-
-
-
-
+<table>
+  <tr>
+    <td><img src="https://github.com/user-attachments/assets/cb60afae-1b94-4895-b3c5-894e261f07d5" alt="Image 1" width="400"/></td>
+    <td><img src="https://github.com/user-attachments/assets/d8e05c2a-67b8-4dc8-9243-e79357594521" alt="Image 2" width="400"/></td>
+  </tr>
+  <tr>
+    <td><img src="https://github.com/user-attachments/assets/84525437-a9e1-4143-8fdd-fbd44826e57d" alt="Image 3" width="400"/></td>
+    <td><img src="https://github.com/user-attachments/assets/d7359733-37bf-4d04-a3fd-36c47f7d434f" alt="Image 4" width="400"/></td>
+  </tr>
+</table>
 
 # Build the App
 To build this app ensure you use the following:
