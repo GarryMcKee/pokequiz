@@ -26,22 +26,22 @@ These should be downloaded separately from Android Studio if you wish to only bu
 To build a release apk (unsigned) of the application run __./gradlew assembleRelease__ from the root directory of the sources.
 
 # Technical Overview
-__Architecture__
-MVVM
-__Conurrency__
-Kotlin Coroutines
-__Persistence__
-Room and Preference Datstore
-__Dependency Injection__
-Hilt
-__REST API Integration__
-Retrofit and OkHTTP
-__JSON Marshalling__
-Moshi
-__Image Loading__
-Coil, specifically AsyncImage
-__Testing__
-JUnit, Mockito and Compose UI
+__Architecture__  
+MVVM  
+__Conurrency__  
+Kotlin Coroutines  
+__Persistence__  
+Room and Preference Datstore  
+__Dependency Injection__  
+Hilt  
+__REST API Integration__  
+Retrofit and OkHTTP  
+__JSON Marshalling__  
+Moshi  
+__Image Loading__  
+Coil, specifically AsyncImage  
+__Testing__  
+JUnit, Mockito and Compose UI  
 
 
 # Principles of Design
@@ -193,7 +193,7 @@ Room allows us to configure DAO classes that represent functionality against our
 The app could have more elaborate UI work completed and could rely less on the Material themes and opt for a more custom and bespoke visual design. 
 The loading state itself is also relatively simple and could have a more friendly design rather than just a progress indicator and text.
 We could also add more dynamic scaling and dimension qualifiers to enable the app to support a broader range of form factors.
-## Capitalisatiob Logic
+## Capitalisation Logic
 Currently the Pokemon names are uncapitalised when retrieved from the API so we simply capitalise the first leter, this breaks for Pokemon such as Mr Mime for example, a more nuanced approach could capitalise double barred names and other variations.
 
 ## Delegate State Flow to UseCases
