@@ -193,6 +193,8 @@ Room allows us to configure DAO classes that represent functionality against our
 The app could have more elaborate UI work completed and could rely less on the Material themes and opt for a more custom and bespoke visual design. 
 The loading state itself is also relatively simple and could have a more friendly design rather than just a progress indicator and text.
 We could also add more dynamic scaling and dimension qualifiers to enable the app to support a broader range of form factors.
+## Capitalisatiob Logic
+Currently the Pokemon names are uncapitalised when retrieved from the API so we simply capitalise the first leter, this breaks for Pokemon such as Mr Mime for example, a more nuanced approach could capitalise double barred names and other variations.
 
 ## Delegate State Flow to UseCases
 Currently the __QuizScreenViewModel__ is doing a lot of work orchestrating state flows and combing data from the domain layer. Some of this work could be delegated further down to the use cases and the ViewModel could instead focus on just orchestrating the streams themselves and mapping the data the the UI layer as required. This would make testing the flow of state in the ViewModel a simpler task. This would likely add more flow based architecture further down the line of the use cases and repositories, which currently just use suspend functions
