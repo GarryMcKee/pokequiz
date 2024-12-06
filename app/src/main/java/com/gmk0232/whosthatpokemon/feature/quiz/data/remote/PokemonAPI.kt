@@ -5,10 +5,10 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 import retrofit2.http.Url
 
-const val FORECAST_ENDPOINT = "v2/pokemon?limit=150&offset=0"
+const val FETCH_POKEMON_ENDPOINT = "v2/pokemon"
 
 interface PokemonAPI {
-    @GET(FORECAST_ENDPOINT)
+    @GET(FETCH_POKEMON_ENDPOINT)
     suspend fun fetchPokemon(
         @Query("limit") limit: Int,
         @Query("offset") offset: Int
