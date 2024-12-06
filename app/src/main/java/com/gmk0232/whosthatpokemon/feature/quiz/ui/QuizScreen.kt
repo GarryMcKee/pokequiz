@@ -85,7 +85,7 @@ fun QuizScreen(
                 ),
                 style = MaterialTheme.typography.labelMedium,
                 textAlign = TextAlign.End,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             )
             Spacer(Modifier.height(8.dp))
             when (quizScreenUIState.quizRoundState) {

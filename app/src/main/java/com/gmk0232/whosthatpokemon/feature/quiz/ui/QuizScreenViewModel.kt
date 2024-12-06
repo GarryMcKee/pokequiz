@@ -36,10 +36,9 @@ class QuizScreenViewModel @Inject constructor(
     /*
     If we want to keep the score on screen independent of other data like the round data
     We could model it as it's own separate state object which can have a loading state too
-    For now we'll initialise with a default value of -1 to signal to the UI it's not loaded yet
      */
     private val _quizScreenUIState: MutableStateFlow<QuizScreenUIState> = MutableStateFlow(
-        QuizScreenUIState(quizRoundState = Loading, -1)
+        QuizScreenUIState(quizRoundState = Loading, 0)
     )
 
     val quizScreenUIState = _quizScreenUIState.asStateFlow()
