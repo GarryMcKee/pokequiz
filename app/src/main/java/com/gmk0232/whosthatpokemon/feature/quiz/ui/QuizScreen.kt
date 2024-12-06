@@ -2,9 +2,12 @@ package com.gmk0232.whosthatpokemon.feature.quiz.ui
 
 import android.content.res.Configuration
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.snapping.SnapPosition
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -15,6 +18,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
@@ -109,10 +113,7 @@ fun QuizScreen(
                 }
 
                 QuizRoundState.Loading -> {
-                    Column {
-                        CircularProgressIndicator()
-                        Text(stringResource(R.string.loading_label))
-                    }
+                    LoadingComponent()
                 }
 
                 is QuizRoundState.Error -> {
@@ -158,10 +159,7 @@ fun QuizScreen(
                 }
 
                 QuizRoundState.Loading -> {
-                    Column {
-                        CircularProgressIndicator()
-                        Text("Loading..")
-                    }
+                    LoadingComponent()
                 }
 
                 is QuizRoundState.Error -> {
@@ -181,6 +179,18 @@ fun QuizScreen(
         }
     }
     Spacer(modifier = Modifier.height(16.dp))
+}
+
+@Composable
+private fun LoadingComponent() {
+    Column(
+        Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        CircularProgressIndicator()
+        Text(stringResource(R.string.loading_label))
+    }
 }
 
 
